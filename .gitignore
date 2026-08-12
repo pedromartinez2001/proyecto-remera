@@ -1,0 +1,6 @@
+*.zip
+.netlify/
+node_modules/
+.env
+.env.*
+!.env.example

@@ -1,0 +1,19 @@
+.checkout-dialog { max-width: 680px; padding: 45px; }
+.checkout-dialog h2 { font: 2.5rem/.95 "Archivo Black"; text-transform: uppercase; margin: 0; }
+.form-intro { color: var(--muted); line-height: 1.5; }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 25px 0; }
+.form-grid label { font-size: .8rem; font-weight: 700; }
+.form-grid label.full { grid-column: 1/-1; }
+.form-grid input { display: block; width: 100%; margin-top: 7px; border: 1px solid var(--ink); background: white; padding: 12px; font: inherit; }
+.payment-summary { display: grid; grid-template-columns: 1fr auto; gap: 9px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 18px 0; margin-bottom: 10px; }
+.shipping-note, .payment-error { font-size: .76rem; color: var(--muted); line-height: 1.4; }
+.payment-error { color: #b42318; min-height: 1.2em; }
+.button[disabled] { opacity: .55; cursor: wait; }
+.payment-result { min-height: 100vh; display: grid; place-items: center; padding: 25px; }
+.payment-result > .logo { position: absolute; top: 30px; left: 5vw; }
+.payment-result section { max-width: 680px; text-align: center; }
+.payment-result h1 { font: clamp(3rem,7vw,6rem)/.92 "Archivo Black"; text-transform: uppercase; letter-spacing: -3px; margin: 0; }
+.payment-result section p { line-height: 1.6; }
+.payment-result .button { margin-top: 20px; }
+@media (max-width: 560px) { .checkout-dialog { padding: 35px 20px; } .form-grid { grid-template-columns: 1fr; } .form-grid label.full { grid-column: auto; } }
+.designer-layout{display:grid;grid-template-columns:1.1fr .9fr;border:2px solid var(--ink)}.designer-preview{min-height:620px;background:var(--acid);display:grid;place-items:center;position:relative;overflow:hidden}.designer-preview:before{content:"";position:absolute;width:75%;aspect-ratio:1;border:2px solid;border-radius:50%}.designer-shirt{width:330px;height:390px;z-index:1;transition:.2s}.user-design{position:relative;top:15px;width:150px;height:150px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;font:1.1rem/.95 "Archivo Black";overflow:hidden;padding:5px}.user-design img{max-width:100%;max-height:105px;object-fit:contain}.user-design.size-small{transform:scale(.65)}.user-design.size-large{transform:scale(1.25)}.side-switch{position:absolute;bottom:22px;z-index:2;display:flex}.side-switch .choice{background:var(--paper)}.side-switch .choice.active{background:var(--ink)}.designer-controls{padding:45px;background:var(--paper)}.designer-option{margin-bottom:22px}.designer-option>label{display:block;font-weight:700;margin-bottom:9px}.designer-select,.designer-option input{width:100%;border:1px solid var(--ink);background:white;padding:12px;font:inherit}.designer-option small,.designer-controls>small{display:block;color:var(--muted);line-height:1.4;margin-top:7px}.back-print{display:flex;gap:9px;align-items:start;margin:25px 0;font-weight:600}.designer-price{display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--ink);padding:22px 0;font-size:1.1rem}.designer-price strong{font:1.4rem "Archivo Black"}@media(max-width:850px){.designer-layout{grid-template-columns:1fr}.designer-preview{min-height:480px}.designer-shirt{width:260px;height:305px}}@media(max-width:560px){.designer-controls{padding:30px 20px}.designer-preview{min-height:400px}}

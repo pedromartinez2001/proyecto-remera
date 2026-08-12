@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Remeras personalizadas con impresión DTF y envíos a todo Paraguay.">
+  <meta name="theme-color" content="#f3ff4f">
+  <title>TRAZO PY — Remeras personalizadas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="payment.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="logo" href="#inicio" aria-label="TRAZO PY, inicio">TRAZO<span>PY</span></a>
+    <nav aria-label="Navegación principal">
+      <a href="#modelos">Modelos</a>
+      <a href="#como-funciona">Cómo comprar</a>
+      <a href="#preguntas">Preguntas</a>
+    </nav>
+    <button class="cart-button" id="open-cart" type="button" aria-label="Abrir carrito">
+      Carrito <span id="cart-count">0</span>
+    </button>
+  </header>
+
+  <main>
+    <section class="hero" id="inicio">
+      <div class="hero-copy">
+        <p class="eyebrow">Impresas en Paraguay · Envíos a todo el país</p>
+        <h1>Tu idea.<br><em>En una remera.</em></h1>
+        <p class="hero-text">Remeras negras o blancas, estampadas en DTF con colores intensos y hechas especialmente para vos.</p>
+        <div class="hero-actions">
+          <a class="button primary" href="#modelos">Elegir una remera</a>
+          <a class="button secondary" href="#personalizada">Quiero mi diseño</a>
+        </div>
+        <div class="trust-row" aria-label="Beneficios">
+          <span>✓ Producción local</span><span>✓ Pago seguro</span><span>✓ Envío nacional</span>
+        </div>
+      </div>
+      <div class="hero-art" aria-label="Remera negra estampada con la frase Hecho para destacar">
+        <span class="burst">NUEVO<br>DROP</span>
+        <div class="shirt shirt-black hero-shirt"><div class="print print-main">HECHO<br><i>PARA</i><br>DESTACAR</div></div>
+        <p class="hand-note">DTF full color ↗</p>
+      </div>
+    </section>
+
+    <div class="marquee" aria-hidden="true"><div>DISEÑO PROPIO ✦ ALGODÓN SUAVE ✦ HECHO EN PARAGUAY ✦ DTF FULL COLOR ✦ DISEÑO PROPIO ✦ ALGODÓN SUAVE ✦</div></div>
+
+    <section class="products section" id="modelos">
+      <div class="section-heading">
+        <div><p class="eyebrow">Elegí tu estilo</p><h2>Los favoritos</h2></div>
+        <p>Todos los modelos están disponibles en blanco o negro y talles S al XXL.</p>
+      </div>
+      <div class="product-grid" id="product-grid"></div>
+    </section>
+
+    <section class="custom section" id="personalizada">
+      <div class="custom-card">
+        <div>
+          <p class="eyebrow">¿Tenés una idea?</p>
+          <h2>Nosotros la<br>volvemos remera.</h2>
+          <p>Mandanos tu imagen, logo o frase por WhatsApp. Revisamos la calidad del archivo y te mostramos una vista previa antes de imprimir.</p>
+          <button class="button dark" id="custom-design" type="button">Cotizar mi diseño →</button>
+        </div>
+        <div class="custom-visual">
+          <div class="shirt shirt-white custom-shirt"><div class="print print-custom">TU<br><i>DISEÑO</i><br>AQUÍ</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="designer section" id="disenador">
+      <div class="section-heading"><div><p class="eyebrow">Creá la tuya</p><h2>Diseñá tu remera</h2></div><p>Combiná color, talle, texto e imagen. El precio se actualiza mientras diseñás.</p></div>
+      <div class="designer-layout">
+        <div class="designer-preview">
+          <div class="shirt shirt-black designer-shirt" id="designer-shirt"><div class="user-design size-medium" id="user-design"><img id="design-image" alt="Vista previa del diseño" hidden><span id="design-text">TU DISEÑO</span></div></div>
+          <div class="side-switch"><button type="button" class="choice active" data-side="Frente">Frente</button><button type="button" class="choice" data-side="Espalda">Espalda</button></div>
+        </div>
+        <form class="designer-controls" id="designer-form">
+          <div class="designer-option"><label>Color</label><div class="choices"><button type="button" class="choice color-choice active" data-design-color="Negro" aria-label="Negro"></button><button type="button" class="choice color-choice" data-design-color="Blanco" aria-label="Blanco"></button></div></div>
+          <div class="designer-option"><label for="design-size">Talle</label><select id="design-size" class="designer-select"><option>S</option><option selected>M</option><option>L</option><option>XL</option><option>XXL</option></select></div>
+          <div class="designer-option"><label for="print-size">Tamaño de impresión</label><select id="print-size" class="designer-select"><option value="small">Pequeña — hasta 15 cm</option><option value="medium" selected>Mediana — hasta 25 cm</option><option value="large">Grande — hasta 35 cm</option></select></div>
+          <div class="designer-option"><label for="custom-text">Texto opcional</label><input id="custom-text" maxlength="28" placeholder="Ej.: Hecho para destacar"></div>
+          <div class="designer-option"><label for="custom-image">Subí tu imagen</label><input id="custom-image" type="file" accept="image/png,image/jpeg,image/webp"><small>PNG transparente recomendado. Máximo 8 MB.</small></div>
+          <label class="back-print"><input id="add-back" type="checkbox"> Agregar impresión pequeña en la espalda (+ Gs. 20.000)</label>
+          <div class="designer-price"><span>Precio estimado</span><strong id="designer-total">Gs. 85.000</strong></div>
+          <button class="button primary dialog-add" type="submit">Agregar diseño al carrito</button>
+          <small>Confirmaremos el archivo y la vista final antes de imprimir.</small>
+        </form>
+      </div>
+    </section>
+
+    <section class="steps section" id="como-funciona">
+      <p class="eyebrow">Simple y sin vueltas</p><h2>¿Cómo funciona?</h2>
+      <div class="steps-grid">
+        <article><span>01</span><h3>Elegís</h3><p>Seleccioná diseño, color y talle. También podés enviarnos tu propio diseño.</p></article>
+        <article><span>02</span><h3>Confirmás</h3><p>Completá tus datos. Te confirmamos el total y el tiempo de preparación.</p></article>
+        <article><span>03</span><h3>Recibís</h3><p>Despachamos tu pedido y te enviamos el código de seguimiento.</p></article>
+      </div>
+    </section>
+
+    <section class="faq section" id="preguntas">
+      <div><p class="eyebrow">Antes de comprar</p><h2>Preguntas<br>frecuentes</h2></div>
+      <div class="accordion">
+        <details><summary>¿Cuánto tarda mi pedido?</summary><p>La producción estimada es de 2 a 4 días hábiles. El envío se suma según tu ciudad.</p></details>
+        <details><summary>¿Qué calidad debe tener mi imagen?</summary><p>Idealmente PNG con fondo transparente y buena resolución. Antes de imprimir revisamos el archivo con vos.</p></details>
+        <details><summary>¿Cómo elijo mi talle?</summary><p>Medí una remera que te quede bien de axila a axila. Te enviamos la tabla exacta antes de confirmar.</p></details>
+        <details><summary>¿Cómo cuido la estampa DTF?</summary><p>Lavá la prenda del revés con agua fría, sin blanqueador, y no planches directamente sobre el diseño.</p></details>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <a class="logo footer-logo" href="#inicio">TRAZO<span>PY</span></a>
+    <p>Remeras con personalidad, hechas en Paraguay.</p>
+    <div><a href="#">Instagram</a><a href="#">TikTok</a><a href="#">Facebook</a></div>
+    <small>© <span id="year"></span> TRAZO PY · Cambios por fallas de fabricación.</small>
+  </footer>
+
+  <div class="overlay" id="overlay" hidden></div>
+  <aside class="cart" id="cart" aria-label="Carrito de compras" aria-hidden="true">
+    <div class="cart-header"><h2>Tu carrito</h2><button id="close-cart" aria-label="Cerrar carrito">×</button></div>
+    <div class="cart-items" id="cart-items"></div>
+    <div class="cart-empty" id="cart-empty"><span>☻</span><p>Tu carrito está esperando<br>una remera increíble.</p></div>
+    <div class="cart-footer">
+      <div class="cart-total"><span>Subtotal</span><strong id="cart-total">Gs. 0</strong></div>
+      <small>El envío se calcula según tu ciudad.</small>
+      <button class="button primary checkout" id="checkout" type="button">Pagar con Pagopar</button>
+    </div>
+  </aside>
+
+  <dialog id="product-dialog">
+    <button class="dialog-close" id="dialog-close" aria-label="Cerrar">×</button>
+    <div id="dialog-content"></div>
+  </dialog>
+  <dialog id="checkout-dialog" class="checkout-dialog">
+    <button class="dialog-close" id="checkout-close" aria-label="Cerrar">×</button>
+    <form id="payment-form">
+      <p class="eyebrow">Pago protegido por Pagopar</p>
+      <h2>Datos para pagar</h2>
+      <p class="form-intro">En el siguiente paso elegís tarjeta, QR u otro medio habilitado por Pagopar.</p>
+      <div class="form-grid">
+        <label class="full">Nombre y apellido<input name="name" autocomplete="name" required minlength="3"></label>
+        <label>Email<input name="email" type="email" autocomplete="email" required></label>
+        <label>Cédula<input name="document" inputmode="numeric" required pattern="[0-9.\-]{5,15}"></label>
+        <label>Teléfono<input name="phone" type="tel" autocomplete="tel" required placeholder="0981 123 456"></label>
+        <label>Ciudad<input name="city" autocomplete="address-level2" required></label>
+        <label class="full">Dirección y referencia<input name="address" autocomplete="street-address" required></label>
+      </div>
+      <div class="payment-summary"><span>Productos</span><strong id="payment-subtotal">Gs. 0</strong><span>Envío nacional estimado</span><strong id="payment-shipping">Gs. 25.000</strong><span>Total a pagar</span><strong id="payment-total">Gs. 0</strong></div>
+      <p class="shipping-note">La tarifa de envío es provisoria. Ajustala antes de publicar según tu transportadora.</p>
+      <button class="button primary dialog-add" id="pay-button" type="submit">Continuar a Pagopar →</button>
+      <p class="payment-error" id="payment-error" role="alert"></p>
+    </form>
+  </dialog>
+  <div class="toast" id="toast" role="status"></div>
+  <script src="app.js"></script>
+</body>
+</html>
