@@ -1,6 +1,6 @@
 import { createHash, randomBytes } from "node:crypto";
 
-const INTEGRATION_VERSION = "pagopar-2026-08-12-v2";
+const INTEGRATION_VERSION = "pagopar-2026-08-12-v3-document-fix";
 const CATALOG = new Map([[1,{name:"Hecho para destacar",price:95000}],[2,{name:"Modo creativo",price:95000}],[3,{name:"Paraguay vibra",price:105000}],[4,{name:"Sin miedo",price:95000}]]);
 const SIZES = new Set(["S","M","L","XL","XXL"]);
 const COLORS = new Set(["Negro","Blanco"]);
