@@ -1,6 +1,6 @@
 import { createHash, randomBytes } from "node:crypto";
 
-const INTEGRATION_VERSION = "pagopar-2026-08-12-v8-own-shipping-explicit";
+const INTEGRATION_VERSION = "pagopar-2026-08-12-v9-shipping-flow";
 const CATALOG = new Map([[1,{name:"Hecho para destacar",price:95000}],[2,{name:"Modo creativo",price:95000}],[3,{name:"Paraguay vibra",price:105000}],[4,{name:"Sin miedo",price:95000}]]);
 const SIZES = new Set(["S","M","L","XL","XXL"]);
 const COLORS = new Set(["Negro","Blanco"]);
@@ -23,10 +23,20 @@ export async function handler(event) {
     const shipping=Number(process.env.SHIPPING_PRICE||25000), productsTotal=validated.reduce((sum,item)=>sum+item.price*item.qty,0), total=productsTotal+shipping;
     const orderId=`TRZ-${Date.now()}-${randomBytes(2).toString("hex").toUpperCase()}`;
     const expires=new Date(Date.now()+24*60*60*1000),date=expires.toLocaleString("sv-SE",{timeZone:"America/Asuncion"}).replace("T"," ").slice(0,19);
-    const ownShipping={peso:"0.00",largo:"0.00",ancho:"0.00",alto:"0.00",opciones_envio:{metodo_aex:false}};
+    const ownShipping={peso:"0.00",largo:"0.00",ancho:"0.00",alto:"0.00",opciones_envio:{metodo_propio:{listado:[{tiempo_entrega:72,destino:"1",precio:shipping}]},metodo_aex:false}};
     const purchaseItems=validated.map(item=>({ciudad:"1",nombre:`${item.name} — ${item.color} / ${item.size}`,cantidad:item.qty,categoria:"980",...ownShipping,public_key:publicKey,url_imagen:"",descripcion:item.custom?`DTF ${item.custom.printSize}, ${item.custom.side}${item.custom.back?", más espalda":""}${item.custom.text?`, texto: ${item.custom.text}`:""}${item.custom.hasImage?", incluye imagen":""}`:`Remera DTF ${item.color}, talle ${item.size}`,id_producto:item.id,precio_total:item.price*item.qty,vendedor_telefono:"",vendedor_direccion:"",vendedor_direccion_referencia:"",vendedor_direccion_coordenadas:""}));
-    if(shipping>0)purchaseItems.push({ciudad:"1",nombre:"Envío nacional",cantidad:1,categoria:"980",...ownShipping,public_key:publicKey,url_imagen:"",descripcion:`Entrega en ${cityName}`,id_producto:9001,precio_total:shipping,vendedor_telefono:"",vendedor_direccion:"",vendedor_direccion_referencia:"",vendedor_direccion_coordenadas:""});
-    const payload={token:sha1(`${privateKey}${orderId}${Number(total)}`),comprador:{ruc:"",email,ciudad:"1",nombre:name,telefono:phone.startsWith("+")?phone:`+595${phone.replace(/^0/,"")}`,direccion:`${address}, ${cityName}`,documento:document,coordenadas:"",razon_social:"",tipo_documento:"CI",direccion_referencia:""},public_key:publicKey,monto_total:total,tipo_pedido:"VENTA-COMERCIO",compras_items:purchaseItems,fecha_maxima_pago:date,id_pedido_comercio:orderId,descripcion_resumen:`Pedido ${orderId}`,forma_pago:9};
+    const buyer={ruc:"",email,ciudad:"1",nombre:name,telefono:phone.startsWith("+")?phone:`+595${phone.replace(/^0/,"")}`,direccion:`${address}, ${cityName}`,documento:document,coordenadas:"",razon_social:"",tipo_documento:"CI",direccion_referencia:""};
+    const freightPayload={token:sha1(`${privateKey}CALCULAR-FLETE`),comprador:buyer,public_key:publicKey,monto_total:productsTotal,tipo_pedido:"VENTA-COMERCIO",compras_items:purchaseItems,fecha_maxima_pago:date,id_pedido_comercio:orderId,descripcion_resumen:`Pedido ${orderId}`,forma_pago:9};
+    const freightResponse=await fetch("https://api.pagopar.com/api/calcular-flete/2.0/traer",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(freightPayload)});
+    const freight=await freightResponse.json();
+    if(!freightResponse.ok||freight?.respuesta===false||!Array.isArray(freight?.compras_items))return json(502,{error:typeof freight?.resultado==="string"?freight.resultado:"Pagopar no pudo calcular el envío propio."});
+    freight.compras_items.forEach((item,index)=>{item.envio_seleccionado="propio";item.costo_envio=index===0?shipping:0;item.opciones_envio=item.opciones_envio||{};item.opciones_envio.metodo_propio={...(item.opciones_envio.metodo_propio||{}),costo:index===0?shipping:0,tiempo_entrega:72};});
+    freight.monto_total=total;
+    freight.token=sha1(`${privateKey}CALCULAR-FLETE`);
+    const selectedResponse=await fetch("https://api.pagopar.com/api/calcular-flete/2.0/traer",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(freight)});
+    const selected=await selectedResponse.json();
+    if(!selectedResponse.ok||selected?.respuesta===false||!Array.isArray(selected?.compras_items))return json(502,{error:typeof selected?.resultado==="string"?selected.resultado:"Pagopar no pudo confirmar el envío propio."});
+    const payload={...selected,token:sha1(`${privateKey}${orderId}${Number(total)}`),monto_total:total};
     const response=await fetch("https://api.pagopar.com/api/comercios/2.0/iniciar-transaccion",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
     const result=await response.json(),hash=result?.resultado?.[0]?.data;
     if(!response.ok||!result?.respuesta||!hash)return json(502,{error:typeof result?.resultado==="string"?result.resultado:"Pagopar no pudo crear el pedido."});
