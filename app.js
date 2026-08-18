@@ -13,7 +13,7 @@ const STORE = {
 
 let cart = JSON.parse(localStorage.getItem("trazo-cart") || "[]");
 let selected = { product: null, color: "Negro", size: "M" };
-let customDesign = { color: "Negro", size: "M", printSize: "medium", text: "", side: "Frente", back: false, hasImage: false };
+let customDesign = { color: "Negro", size: "M", printSize: "medium", text: "", side: "Frente", back: false, hasImage: false, x: 50, y: 42, scale: 100, rotation: 0 };
 const $ = (selector) => document.querySelector(selector);
 const format = (value) => `${STORE.currency} ${value.toLocaleString("es-PY")}`;
 
@@ -133,15 +133,45 @@ async function createPayment(event) {
 function showToast(message) { const toast = $("#toast"); toast.textContent = message; toast.classList.add("show"); setTimeout(() => toast.classList.remove("show"), 2200); }
 
 function customPrice() { const prices={small:25000,medium:30000,large:40000}; return 55000+prices[customDesign.printSize]+(customDesign.back?20000:0)+(customDesign.size==="XXL"?5000:0); }
-function updateDesigner(){const shirt=$("#designer-shirt"),design=$("#user-design");shirt.className=`shirt shirt-${customDesign.color==="Negro"?"black":"white"} designer-shirt`;design.className=`user-design size-${customDesign.printSize}`;$("#design-text").textContent=customDesign.text||(customDesign.side==="Frente"?"TU DISEÑO":"ESPALDA");$("#designer-total").textContent=format(customPrice());}
+function updateDesigner(){
+  const shirt=$("#designer-shirt"),design=$("#user-design"),text=$("#design-text"),image=$("#design-image"),preview=$(
+    ".designer-preview"
+  );
+  shirt.className=`shirt shirt-${customDesign.color==="Negro"?"black":"white"} designer-shirt`;
+  text.textContent=customDesign.text;
+  text.hidden=!customDesign.text;
+  image.hidden=!customDesign.hasImage;
+  const hasContent=customDesign.hasImage||Boolean(customDesign.text);
+  design.hidden=!hasContent;
+  preview.classList.toggle("has-design",hasContent);
+  $("#designer-hint").hidden=hasContent;
+  const printScale={small:.7,medium:1,large:1.25}[customDesign.printSize];
+  design.style.left=`${customDesign.x}%`;
+  design.style.top=`${customDesign.y}%`;
+  design.style.transform=`translate(-50%,-50%) scale(${(customDesign.scale/100)*printScale}) rotate(${customDesign.rotation}deg)`;
+  $("#design-scale").value=customDesign.scale;
+  $("#design-rotation").value=customDesign.rotation;
+  $("#designer-total").textContent=format(customPrice());
+}
 document.querySelectorAll("[data-design-color]").forEach(button=>button.addEventListener("click",()=>{customDesign.color=button.dataset.designColor;document.querySelectorAll("[data-design-color]").forEach(b=>b.classList.toggle("active",b===button));updateDesigner();}));
 document.querySelectorAll("[data-side]").forEach(button=>button.addEventListener("click",()=>{customDesign.side=button.dataset.side;document.querySelectorAll("[data-side]").forEach(b=>b.classList.toggle("active",b===button));updateDesigner();}));
 $("#design-size").addEventListener("change",e=>{customDesign.size=e.target.value;updateDesigner();});
 $("#print-size").addEventListener("change",e=>{customDesign.printSize=e.target.value;updateDesigner();});
 $("#custom-text").addEventListener("input",e=>{customDesign.text=e.target.value.trim();updateDesigner();});
 $("#add-back").addEventListener("change",e=>{customDesign.back=e.target.checked;updateDesigner();});
-$("#custom-image").addEventListener("change",e=>{const file=e.target.files[0];if(!file)return;if(file.size>8*1024*1024){e.target.value="";return showToast("La imagen supera los 8 MB");}const reader=new FileReader();reader.onload=()=>{const img=$("#design-image");img.src=reader.result;img.hidden=false;customDesign.hasImage=true;};reader.readAsDataURL(file);});
-$("#designer-form").addEventListener("submit",e=>{e.preventDefault();const labels={small:"Impresión pequeña",medium:"Impresión mediana",large:"Impresión grande"},price=customPrice(),custom={...customDesign,printSizeLabel:labels[customDesign.printSize]};cart.push({key:`custom-${Date.now()}`,id:100,name:"Remera personalizada",price,color:customDesign.color,size:customDesign.size,qty:1,custom});saveCart();showToast("Diseño agregado al carrito");openCart();});
+$("#custom-image").addEventListener("change",e=>{const file=e.target.files[0];if(!file)return;if(file.size>8*1024*1024){e.target.value="";return showToast("La imagen supera los 8 MB");}const reader=new FileReader();reader.onload=()=>{const img=$("#design-image");img.src=reader.result;customDesign.hasImage=true;updateDesigner();};reader.readAsDataURL(file);});
+$("#design-scale").addEventListener("input",e=>{customDesign.scale=Number(e.target.value);updateDesigner();});
+$("#design-rotation").addEventListener("input",e=>{customDesign.rotation=Number(e.target.value);updateDesigner();});
+$("#center-design").addEventListener("click",()=>{customDesign.x=50;customDesign.y=42;customDesign.rotation=0;updateDesigner();});
+$("#remove-design").addEventListener("click",()=>{customDesign.text="";customDesign.hasImage=false;customDesign.x=50;customDesign.y=42;customDesign.scale=100;customDesign.rotation=0;$("#custom-text").value="";$("#custom-image").value="";$("#design-image").removeAttribute("src");updateDesigner();});
+
+let dragState=null;
+$("#user-design").addEventListener("pointerdown",event=>{if($("#user-design").hidden)return;const zone=$("#print-zone").getBoundingClientRect();dragState={pointerId:event.pointerId,zone};$("#user-design").setPointerCapture(event.pointerId);event.preventDefault();});
+$("#user-design").addEventListener("pointermove",event=>{if(!dragState||dragState.pointerId!==event.pointerId)return;const {zone}=dragState;customDesign.x=Math.max(8,Math.min(92,((event.clientX-zone.left)/zone.width)*100));customDesign.y=Math.max(8,Math.min(92,((event.clientY-zone.top)/zone.height)*100));updateDesigner();});
+const endDrag=()=>{dragState=null;};
+$("#user-design").addEventListener("pointerup",endDrag);$("#user-design").addEventListener("pointercancel",endDrag);
+
+$("#designer-form").addEventListener("submit",e=>{e.preventDefault();if(!customDesign.hasImage&&!customDesign.text)return showToast("Subí una imagen o escribí un texto");const labels={small:"Impresión pequeña",medium:"Impresión mediana",large:"Impresión grande"},price=customPrice(),custom={...customDesign,printSizeLabel:labels[customDesign.printSize]};cart.push({key:`custom-${Date.now()}`,id:100,name:"Remera personalizada",price,color:customDesign.color,size:customDesign.size,qty:1,custom});saveCart();showToast("Diseño agregado al carrito");openCart();});
 
 $("#open-cart").addEventListener("click", openCart);
 $("#close-cart").addEventListener("click", closeCart);
@@ -150,6 +180,8 @@ $("#checkout").addEventListener("click", checkout);
 $("#checkout-close").addEventListener("click", () => $("#checkout-dialog").close());
 $("#payment-form").addEventListener("submit", createPayment);
 $("#dialog-close").addEventListener("click", () => $("#product-dialog").close());
-$("#custom-design").addEventListener("click", () => window.open(whatsappUrl("¡Hola! Quiero cotizar una remera con mi propio diseño. ¿Qué archivo debo enviarles?"), "_blank", "noopener"));
+$("#custom-design").addEventListener("click", () => $("#disenador").scrollIntoView({behavior:"smooth"}));
+const floatingCustom=$(".floating-custom");
+new IntersectionObserver(entries=>floatingCustom.classList.toggle("is-hidden",entries[0].isIntersecting),{threshold:.12}).observe($("#disenador"));
 $("#year").textContent = new Date().getFullYear();
-renderProducts(); renderCart();
+renderProducts(); renderCart(); updateDesigner();

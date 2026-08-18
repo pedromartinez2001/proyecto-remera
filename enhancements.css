@@ -1,0 +1,49 @@
+.nav-custom{background:var(--acid);padding:8px 12px;border:1px solid var(--ink);font-weight:800}
+html,body{overflow-x:hidden}
+.hero-custom-cta{font-size:1.03rem;padding:17px 25px}
+
+/* Mockups fotográficos reutilizables */
+.shirt{clip-path:none;background-color:transparent;background-repeat:no-repeat;background-position:center;background-size:contain;filter:drop-shadow(0 20px 20px rgba(0,0,0,.18));isolation:isolate;aspect-ratio:1/1;height:auto!important}
+.shirt-black{background-image:url("assets/shirt-black.png");color:white}
+.shirt-white{background-image:url("assets/shirt-white.png");color:#111}
+.hero-shirt{width:min(70vw,520px);transform:rotate(3deg)}
+.product-image .shirt{width:280px}
+.custom-shirt{width:min(82%,430px);transform:rotate(-4deg)}
+.dialog-image .shirt{width:min(90%,430px)}
+.cart-item-thumb .shirt{width:58px}
+.mini-print,.print{position:absolute;z-index:2;left:50%;top:47%;transform:translate(-50%,-50%);width:36%;text-shadow:0 1px 1px rgba(0,0,0,.1)}
+
+.custom-card{box-shadow:12px 12px 0 var(--ink)}
+.custom-card .button{font-size:1rem;padding:17px 24px}
+
+.floating-custom{position:fixed;right:24px;bottom:22px;z-index:18;background:var(--orange);color:var(--ink);border:2px solid var(--ink);box-shadow:5px 5px 0 var(--ink);padding:13px 17px;font-weight:900;text-transform:uppercase;letter-spacing:.5px;transition:.2s}
+.floating-custom:hover{transform:translate(2px,2px);box-shadow:3px 3px 0 var(--ink)}
+.floating-custom span{margin-left:8px}
+.floating-custom.is-hidden{opacity:0;transform:translateY(20px);pointer-events:none}
+
+@media(max-width:900px){.hero-shirt{width:min(92vw,470px)}.product-image .shirt{width:230px}.floating-custom{right:16px;bottom:16px;font-size:.78rem}.nav-custom{display:none}}
+@media(max-width:560px){.product-image .shirt{width:180px}.custom-card{box-shadow:7px 7px 0 var(--ink)}.hero-art{min-height:480px}}
+
+/* Editor de personalización */
+.designer{background:#ece8df}
+.designer-layout{border:0;box-shadow:10px 10px 0 var(--ink)}
+.designer-preview{min-height:700px;background:linear-gradient(145deg,#eaff3f 0 62%,#d6ea34 62%);user-select:none;touch-action:none}
+.designer-preview:before{opacity:.45}
+.designer-shirt{width:min(82%,520px);z-index:1;transition:background-image .2s}
+.print-zone{position:absolute;left:34%;top:27%;width:32%;height:52%;z-index:3;overflow:hidden;touch-action:none}
+.user-design{position:absolute;left:50%;top:42%;width:78%;height:auto;min-height:55px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0;overflow:visible;cursor:grab;transform:translate(-50%,-50%);transform-origin:center;touch-action:none;color:inherit;text-shadow:0 1px 1px rgba(0,0,0,.25)}
+.user-design:active{cursor:grabbing}
+.user-design img{display:block;max-width:100%;max-height:190px;object-fit:contain;pointer-events:none;filter:drop-shadow(0 1px 1px rgba(0,0,0,.12))}
+.user-design span{font:clamp(.75rem,2.2vw,1.35rem)/.95 "Archivo Black";max-width:100%;overflow-wrap:anywhere;text-align:center;pointer-events:none}
+.user-design[hidden],.user-design img[hidden],.user-design span[hidden]{display:none!important}
+.designer-hint{position:absolute;top:22px;left:50%;transform:translateX(-50%);z-index:4;margin:0;width:90%;text-align:center;font-weight:800;font-size:.86rem}
+.drag-help{position:absolute;bottom:78px;z-index:4;background:rgba(247,244,237,.9);border:1px solid var(--ink);padding:7px 11px;margin:0;font-size:.74rem;font-weight:700;opacity:0;transition:.2s}
+.designer-preview.has-design .drag-help{opacity:1}
+.position-controls{border:1px solid var(--line);background:white;padding:16px}
+.position-controls>label:not(:first-child){margin-top:15px}
+.position-controls input[type="range"]{padding:0;accent-color:var(--orange)}
+.editor-actions{display:flex;gap:8px;margin-top:16px}.editor-actions .choice{flex:1;padding:9px}
+.designer-controls{padding:42px}
+
+@media(max-width:850px){.designer-preview{min-height:560px}.designer-shirt{width:min(86%,430px)}.print-zone{left:34%;top:27%;width:32%;height:52%}}
+@media(max-width:560px){.designer-preview{min-height:470px}.designer-shirt{width:min(98%,390px)}.designer-hint{top:14px}.drag-help{bottom:68px}.designer-controls{padding:28px 18px}.editor-actions{flex-direction:column}}

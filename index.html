@@ -11,11 +11,13 @@
   <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="payment.css">
+  <link rel="stylesheet" href="enhancements.css">
 </head>
 <body>
   <header class="site-header">
     <a class="logo" href="#inicio" aria-label="TRAZO PY, inicio">TRAZO<span>PY</span></a>
     <nav aria-label="Navegación principal">
+      <a class="nav-custom" href="#disenador">Creá la tuya</a>
       <a href="#modelos">Modelos</a>
       <a href="#como-funciona">Cómo comprar</a>
       <a href="#preguntas">Preguntas</a>
@@ -32,8 +34,8 @@
         <h1>Tu idea.<br><em>En una remera.</em></h1>
         <p class="hero-text">Remeras negras o blancas, estampadas en DTF con colores intensos y hechas especialmente para vos.</p>
         <div class="hero-actions">
-          <a class="button primary" href="#modelos">Elegir una remera</a>
-          <a class="button secondary" href="#personalizada">Quiero mi diseño</a>
+          <a class="button primary hero-custom-cta" href="#disenador">Diseñar mi remera →</a>
+          <a class="button secondary" href="#modelos">Ver modelos</a>
         </div>
         <div class="trust-row" aria-label="Beneficios">
           <span>✓ Producción local</span><span>✓ Pago seguro</span><span>✓ Envío nacional</span>
@@ -61,11 +63,11 @@
         <div>
           <p class="eyebrow">¿Tenés una idea?</p>
           <h2>Nosotros la<br>volvemos remera.</h2>
-          <p>Mandanos tu imagen, logo o frase por WhatsApp. Revisamos la calidad del archivo y te mostramos una vista previa antes de imprimir.</p>
-          <button class="button dark" id="custom-design" type="button">Cotizar mi diseño →</button>
+          <p>Subí tu imagen, agregá una frase y acomodá el diseño directamente sobre la remera. Vas a ver el precio mientras la creás.</p>
+          <button class="button dark" id="custom-design" type="button">Crear mi remera ahora →</button>
         </div>
         <div class="custom-visual">
-          <div class="shirt shirt-white custom-shirt"><div class="print print-custom">TU<br><i>DISEÑO</i><br>AQUÍ</div></div>
+          <div class="shirt shirt-white custom-shirt"><div class="print print-custom"><span>CREÁ</span><br><i>ALGO</i><br>ÚNICO</div></div>
         </div>
       </div>
     </section>
@@ -74,7 +76,9 @@
       <div class="section-heading"><div><p class="eyebrow">Creá la tuya</p><h2>Diseñá tu remera</h2></div><p>Combiná color, talle, texto e imagen. El precio se actualiza mientras diseñás.</p></div>
       <div class="designer-layout">
         <div class="designer-preview">
-          <div class="shirt shirt-black designer-shirt" id="designer-shirt"><div class="user-design size-medium" id="user-design"><img id="design-image" alt="Vista previa del diseño" hidden><span id="design-text">TU DISEÑO</span></div></div>
+          <p class="designer-hint" id="designer-hint">Subí una imagen o escribí un texto para comenzar</p>
+          <div class="shirt shirt-black designer-shirt" id="designer-shirt"><div class="print-zone" id="print-zone"><div class="user-design size-medium" id="user-design" hidden><img id="design-image" alt="Vista previa del diseño" draggable="false" hidden><span id="design-text" hidden></span></div></div></div>
+          <p class="drag-help">Arrastrá el diseño sobre la remera para ubicarlo</p>
           <div class="side-switch"><button type="button" class="choice active" data-side="Frente">Frente</button><button type="button" class="choice" data-side="Espalda">Espalda</button></div>
         </div>
         <form class="designer-controls" id="designer-form">
@@ -83,6 +87,11 @@
           <div class="designer-option"><label for="print-size">Tamaño de impresión</label><select id="print-size" class="designer-select"><option value="small">Pequeña — hasta 15 cm</option><option value="medium" selected>Mediana — hasta 25 cm</option><option value="large">Grande — hasta 35 cm</option></select></div>
           <div class="designer-option"><label for="custom-text">Texto opcional</label><input id="custom-text" maxlength="28" placeholder="Ej.: Hecho para destacar"></div>
           <div class="designer-option"><label for="custom-image">Subí tu imagen</label><input id="custom-image" type="file" accept="image/png,image/jpeg,image/webp"><small>PNG transparente recomendado. Máximo 8 MB.</small></div>
+          <div class="designer-option position-controls">
+            <label for="design-scale">Tamaño del diseño</label><input id="design-scale" type="range" min="45" max="145" value="100">
+            <label for="design-rotation">Rotación</label><input id="design-rotation" type="range" min="-30" max="30" value="0">
+            <div class="editor-actions"><button type="button" class="choice" id="center-design">Centrar</button><button type="button" class="choice" id="remove-design">Quitar diseño</button></div>
+          </div>
           <label class="back-print"><input id="add-back" type="checkbox"> Agregar impresión pequeña en la espalda (+ Gs. 20.000)</label>
           <div class="designer-price"><span>Precio estimado</span><strong id="designer-total">Gs. 85.000</strong></div>
           <button class="button primary dialog-add" type="submit">Agregar diseño al carrito</button>
@@ -155,6 +164,7 @@
     </form>
   </dialog>
   <div class="toast" id="toast" role="status"></div>
+  <a class="floating-custom" href="#disenador" aria-label="Crear una remera personalizada">Diseñá la tuya <span>→</span></a>
   <script src="app.js"></script>
 </body>
 </html>
